@@ -12,6 +12,7 @@ import {
   DefaultCompilerFields
 } from './schema/compiler'
 import { LibraryResponse } from './schema/library'
+import { CompilationRequest, CompilationResponse } from './schema/compilation'
 
 const COMMON_REQUEST_HEADERS = {
   Accept: 'application/json',
@@ -92,6 +93,24 @@ export class CompilerExplorer {
     language: LanguageHints | string
   ): Promise<GenericResponse<LibraryResponse[]>> {
     return this.#get(`/api/libraries/${language}`)
+  }
+
+  /**
+   * Compile a piece of code using the specified compilation options
+   * @param compiler Compiler id to invoke
+   * @param compilation Compilation options to pass to compiler
+   */
+  async compile(compiler: string, compilation: CompilationRequest): Promise<GenericResponse<CompilationResponse>> {
+    return this.#post(`/api/compiler/${compiler}/compile`, compilation)
+  }
+
+  async #post<T, S extends object>(url: string, body: S): Promise<GenericResponse<T>> {
+    const res = await fetch(`${this.host}${url}`, {
+      method: 'POST',
+      headers: COMMON_REQUEST_HEADERS,
+      body: JSON.stringify(body ?? {})
+    })
+    return new GenericResponse<T>(res)
   }
 
   async #get<T>(url: string): Promise<GenericResponse<T>> {

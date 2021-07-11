@@ -74,4 +74,32 @@ describe('compiler explorer http api', () => {
       expect(libraries[0].versions[0]).toHaveProperty('version')
     })
   })
+
+  describe('sending execution requests', () => {
+    test('the returned data fits the schema', async () => {
+      const res = await ce.compile('clang1200', {
+        allowStoreCodeDebug: false, language: 'c++', options: {
+          userArguments: "-O3",
+          libraries: [],
+          tools: [],
+        },
+        source: 'int main() {}'
+      })
+      const schema = await res.json()
+      expect(schema).toHaveProperty('code')
+      expect(schema).toHaveProperty('okToCache')
+      expect(schema).toHaveProperty('stdout')
+      expect(schema).toHaveProperty('stderr')
+      expect(schema).toHaveProperty('execTime')
+      expect(schema).toHaveProperty('inputFilename')
+      expect(schema).toHaveProperty('compilationOptions')
+      expect(schema).toHaveProperty('tools')
+      expect(schema).toHaveProperty('asmSize')
+      expect(schema).toHaveProperty('asm')
+      expect(schema).toHaveProperty('labelDefinitions')
+      expect(schema).toHaveProperty('parsingTime')
+      expect(schema).toHaveProperty('filteredCount')
+      expect(schema).toHaveProperty('popularArguments')
+    })
+  })
 })
