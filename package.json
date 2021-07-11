@@ -2,11 +2,22 @@
   "name": "ce.js",
   "version": "2021.1-beta",
   "description": "Compiler Explorer API client for NodeJS",
-  "main": "index.js",
-  "repository": "https://github.com/supergrecko/ce.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/supergrecko/ce.js.git"
+  },
+  "author": "me@supergrecko.com",
+  "bugs": {
+    "url": "https://github.com/supergrecko/ce.js/issues"
+  },
+  "homepage": "https://github.com/supergrecko/ce.js#readme",
   "license": "MIT",
   "private": false,
   "scripts": {
+    "prepublishOnly": "yarn compile",
+    "compile": "yarn fmt && tsc",
     "fmt": "prettier --config .prettierrc src/ --write"
   },
   "dependencies": {
@@ -20,5 +31,9 @@
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.3",
     "typescript": "^4.3.5"
-  }
+  },
+  "keywords": [
+    "compiler-explorer",
+    "compiler"
+  ]
 }
