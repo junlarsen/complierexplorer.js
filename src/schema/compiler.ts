@@ -56,42 +56,68 @@ export interface CompilerBase {
 }
 
 export interface LibraryEntry {
+  /** A textual name for the library */
   name: string
+  /** Link to the library's homepage */
   url: string
+  /** A short description about the library */
   description: string
+  /** Library entries to statically link when building */
   staticliblink: string[]
+  /** Library entries to link when building */
   liblink: string[]
+  /** Example code using the library */
   examples: string[]
+  /** Additional options */
   options: string[]
+  /** A version matrix for this library */
   versions: Record<string, Library>
 }
 
 export interface Library {
+  /** A textual name for the library */
   name: string[]
+  /** Version tag for this version of the libray */
   version: string
+  /** Library entries to statically link when building */
   staticliblink: string[]
-  alias: string[]
-  dependencies: string[]
-  path: string[]
-  libpath: string[]
+  /** Library entries to link when building */
   liblink: string[]
+  /** Alias names for this version */
+  alias: string[]
+  /** Dependencies the library requires */
+  dependencies: string[]
+  /** Paths on disk to the library's binaries */
+  path: string[]
+  /** Linker paths to add when linking */
+  libpath: string[]
+  /** Additional options */
   options: string[]
 }
 
 export interface ToolEntry {
+  /** A reference to the tool schema */
   tool: Tool
+  /** Environment variables to add when running the tool */
   env: Record<string, string>
+  /** Add Tool.Options to arguments when invoking the tool */
   addOptionsToToolArgs: boolean
 }
 
 export interface Tool {
+  /** CompilerExplorer internal id for tool */
   id: string
+  /** Textual name for the tool */
   name: string
+  /** What kind of tool is this? (e.g. format) */
   type: string
+  /** Path to tool executable */
   exe: string
   exclude: string[]
+  /** Command line options to pass to tool */
   options: string[]
   stdinHint: string
+  /** CompilerExplorer language this tool is used for */
   compilerLanguage: string
 }
 
