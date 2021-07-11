@@ -12,4 +12,4 @@ export type {
   DefaultLanguageFields,
   LanguageResponse
 } from './schema/language'
-export { CompilerExplorer } from './http'
+export { CompilerExplorer, GenericResponse } from './http'
