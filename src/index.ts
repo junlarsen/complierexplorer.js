@@ -1,15 +1,17 @@
 export type {
   CompilerBase,
-  LibraryEntry,
-  Library,
-  ToolEntry,
-  Tool,
+  CompilerLibraryEntry,
+  CompilerLibrary,
+  CompilerToolEntry,
+  CompilerTool,
   DefaultCompilerFields,
   CompilerResponse
 } from './schema/compiler'
 export type {
   Language,
   DefaultLanguageFields,
-  LanguageResponse
+  LanguageResponse,
+  LanguageHints
 } from './schema/language'
+export { LibraryEntry, Library, LibraryResponse } from './schema/library'
 export { CompilerExplorer, GenericResponse } from './http'

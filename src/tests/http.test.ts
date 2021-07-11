@@ -62,4 +62,16 @@ describe('compiler explorer http api', () => {
       }
     })
   })
+
+  describe('fetching libraries for a single language', () => {
+    test('the returned data fits the schema', async () => {
+      const res = await ce.getLibraries('c++')
+      const libraries = await res.json()
+      expect(libraries[0]).toHaveProperty('name')
+      expect(libraries[0]).toHaveProperty('url')
+      expect(libraries[0]).toHaveProperty('versions')
+      expect(libraries[0]).toHaveProperty('id')
+      expect(libraries[0].versions[0]).toHaveProperty('version')
+    })
+  })
 })

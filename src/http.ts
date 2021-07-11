@@ -11,6 +11,7 @@ import {
   DEFAULT_COMPILER_FIELDS,
   DefaultCompilerFields
 } from './schema/compiler'
+import { LibraryResponse } from './schema/library'
 
 const COMMON_REQUEST_HEADERS = {
   Accept: 'application/json',
@@ -64,6 +65,13 @@ export class CompilerExplorer {
     return this.#get(`/api/compilers?fields=${params}`)
   }
 
+  /**
+   * Retrieve a list of compilers the host CE supports for a given programming
+   * language
+   *
+   * @param language Programming language by id to fetch compilers for
+   * @param extraFields Additional compiler fields to query for
+   */
   async getCompilers<AdditionalFields extends string = never>(
     language: LanguageHints | string,
     extraFields: (AdditionalFields | DefaultCompilerFields)[] = []
@@ -72,6 +80,18 @@ export class CompilerExplorer {
   > {
     const params = [...extraFields, ...DEFAULT_COMPILER_FIELDS].join(',')
     return this.#get(`/api/compilers/${language}?fields=${params}`)
+  }
+
+  /**
+   * Retrieve a list of libraries the host CE supports for a given programming
+   * language
+   *
+   * @param language Programming language by id to fetch compilers for
+   */
+  async getLibraries(
+    language: LanguageHints | string
+  ): Promise<GenericResponse<LibraryResponse[]>> {
+    return this.#get(`/api/libraries/${language}`)
   }
 
   async #get<T>(url: string): Promise<GenericResponse<T>> {

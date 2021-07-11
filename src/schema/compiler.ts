@@ -50,12 +50,12 @@ export interface CompilerBase {
   /** List of output filters which the compiler does not support */
   disabledFilters: string[]
   /** Dictionary of tools the compiler supports */
-  tools?: Record<string, ToolEntry>
+  tools?: Record<string, CompilerToolEntry>
   /** Dictionary of libraries the compiler supports */
-  libs?: Record<string, LibraryEntry>
+  libs?: Record<string, CompilerLibraryEntry>
 }
 
-export interface LibraryEntry {
+export interface CompilerLibraryEntry {
   /** A textual name for the library */
   name: string
   /** Link to the library's homepage */
@@ -71,10 +71,10 @@ export interface LibraryEntry {
   /** Additional options */
   options: string[]
   /** A version matrix for this library */
-  versions: Record<string, Library>
+  versions: Record<string, CompilerLibrary>
 }
 
-export interface Library {
+export interface CompilerLibrary {
   /** A textual name for the library */
   name: string[]
   /** Version tag for this version of the libray */
@@ -95,16 +95,16 @@ export interface Library {
   options: string[]
 }
 
-export interface ToolEntry {
+export interface CompilerToolEntry {
   /** A reference to the tool schema */
-  tool: Tool
+  tool: CompilerTool
   /** Environment variables to add when running the tool */
   env: Record<string, string>
   /** Add Tool.Options to arguments when invoking the tool */
   addOptionsToToolArgs: boolean
 }
 
-export interface Tool {
+export interface CompilerTool {
   /** CompilerExplorer internal id for tool */
   id: string
   /** Textual name for the tool */
