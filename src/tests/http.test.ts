@@ -52,4 +52,14 @@ describe('compiler explorer http api', () => {
       expect(compilers[0]).toHaveProperty('name')
     })
   })
+
+  describe('fetching compilers for a single language', () => {
+    test('all compilers use the expected language', async () => {
+      const res = await ce.getCompilers('c')
+      const compilers = await res.json()
+      for (const compiler of compilers) {
+        expect(compiler.lang).toEqual('c')
+      }
+    })
+  })
 })

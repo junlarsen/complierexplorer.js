@@ -2,7 +2,8 @@ import {
   LanguageResponse,
   DefaultLanguageFields,
   DEFAULT_LANGUAGE_FIELDS,
-  Language
+  Language,
+  LanguageHints
 } from './schema/language'
 import fetch, { Response } from 'node-fetch'
 import {
@@ -61,6 +62,16 @@ export class CompilerExplorer {
   > {
     const params = [...extraFields, ...DEFAULT_COMPILER_FIELDS].join(',')
     return this.#get(`/api/compilers?fields=${params}`)
+  }
+
+  async getCompilers<AdditionalFields extends string = never>(
+    language: LanguageHints | string,
+    extraFields: (AdditionalFields | DefaultCompilerFields)[] = []
+  ): Promise<
+    GenericResponse<(Record<AdditionalFields, unknown> & CompilerResponse)[]>
+  > {
+    const params = [...extraFields, ...DEFAULT_COMPILER_FIELDS].join(',')
+    return this.#get(`/api/compilers/${language}?fields=${params}`)
   }
 
   async #get<T>(url: string): Promise<GenericResponse<T>> {

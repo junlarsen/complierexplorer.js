@@ -36,3 +36,37 @@ export type DefaultLanguageFields = typeof DEFAULT_LANGUAGE_FIELDS[number]
  */
 export type LanguageResponse<K extends keyof Language = DefaultLanguageFields> =
   Pick<Language, K>
+
+/**
+ *  List of languages which are supported on the official CompilerExplorer
+ *  instance
+ */
+export type LanguageHints =
+  | 'ada'
+  | 'analysis'
+  | 'assembly'
+  | 'c++'
+  | 'c'
+  | 'clean'
+  | 'cppx'
+  | 'cppx_blue'
+  | 'ccpx_gold'
+  | 'crystal'
+  | 'cuda'
+  | 'd'
+  | 'fortran'
+  | 'go'
+  | 'haskell'
+  | 'ispc'
+  | 'java'
+  | 'kotlin'
+  | 'llvm'
+  | 'nim'
+  | 'ocaml'
+  | 'openclc'
+  | 'pascal'
+  | 'python'
+  | 'rust'
+  | 'scala'
+  | 'swift'
+  | 'zig'
