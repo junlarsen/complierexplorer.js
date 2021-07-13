@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-class CompilerExplorer extends HttpClient<
+export class CompilerExplorer extends HttpClient<
   typeof fetch,
   Response,
   Response['headers']
