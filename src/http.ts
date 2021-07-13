@@ -100,7 +100,7 @@ export class CompilerExplorer {
    * @param compiler Compiler id to invoke
    * @param compilation Compilation options to pass to compiler
    */
-  async compile(compiler: string, compilation: CompilationRequest): Promise<GenericResponse<CompilationResponse>> {
+  async compile<T extends object = {}>(compiler: string, compilation: (CompilationRequest & T) | T): Promise<GenericResponse<CompilationResponse>> {
     return this.#post(`/api/compiler/${compiler}/compile`, compilation)
   }
 
