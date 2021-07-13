@@ -9,5 +9,6 @@ jobs:
         with:
           node-version: 14.x
       - run: yarn
-      - run: yarn compile
+      - run: yarn compile:node
+      - run: yarn compile:browser
       - run: yarn test

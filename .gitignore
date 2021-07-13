@@ -1,3 +1,9 @@
+# Developer Environment
 .idea
+
+# Build Artifacts
 dist
+browser
+
+# Dependencies
 node_modules

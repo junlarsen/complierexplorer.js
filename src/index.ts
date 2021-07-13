@@ -15,4 +15,3 @@ export type {
 } from './schema/language'
 export { LibraryEntry, Library, LibraryResponse } from './schema/library'
 export { CompilationRequest, CompilationResponse } from './schema/compilation'
-export { CompilerExplorer, GenericResponse } from './http'

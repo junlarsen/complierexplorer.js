@@ -1,4 +1,4 @@
-import { CompilerExplorer } from '../http'
+import { CompilerExplorer } from '../node'
 
 describe('compiler explorer http api', () => {
   const ce = new CompilerExplorer()
@@ -78,10 +78,12 @@ describe('compiler explorer http api', () => {
   describe('sending execution requests', () => {
     test('the returned data fits the schema', async () => {
       const res = await ce.compile('clang1200', {
-        allowStoreCodeDebug: false, language: 'c++', options: {
-          userArguments: "-O3",
+        allowStoreCodeDebug: false,
+        language: 'c++',
+        options: {
+          userArguments: '-O3',
           libraries: [],
-          tools: [],
+          tools: []
         },
         source: 'int main() {}'
       })

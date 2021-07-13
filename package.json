@@ -2,8 +2,8 @@
   "name": "ce.js",
   "version": "2021.1-beta",
   "description": "Compiler Explorer API client for NodeJS",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/node.js",
+  "types": "dist/node.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/supergrecko/ce.js.git"
@@ -17,7 +17,8 @@
   "private": false,
   "scripts": {
     "prepublishOnly": "yarn compile",
-    "compile": "yarn fmt && tsc",
+    "compile:node": "yarn fmt && tsc --project tsconfig.json",
+    "compile:browser": "yarn compile:node && webpack ./dist/browser.js -o ./browser --mode production",
     "fmt": "prettier --config .prettierrc src/ --write",
     "test": "jest"
   },
@@ -31,7 +32,9 @@
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.3",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "webpack": "^5.44.0",
+    "webpack-cli": "^4.7.2"
   },
   "keywords": [
     "compiler-explorer",

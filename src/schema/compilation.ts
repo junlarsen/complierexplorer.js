@@ -3,25 +3,25 @@ import { LanguageHints } from './language'
 export interface CompilationRequest {
   source: string
   options: {
-    userArguments: string,
+    userArguments: string
     executeParameters?: {
       args: string[]
       stdin: string[]
-    },
+    }
     compilerOptions?: {
       skipAsm?: boolean
       executorRequest?: boolean
-    },
-    filters?: Record<CompileFiltersKeys, boolean | undefined>,
+    }
+    filters?: Record<CompileFiltersKeys, boolean | undefined>
     tools: {
       id: string
       args: string
-    }[],
+    }[]
     libraries: {
       id: string
       version: string
     }[]
-  },
+  }
   language: LanguageHints | string
   allowStoreCodeDebug: boolean
   bypassCache?: boolean
@@ -36,23 +36,26 @@ export interface CompilationResponse {
   inputFilename: string
   compilationOptions: string[]
   tools: unknown[] // TODO: find type
-  asmSize: number,
+  asmSize: number
   asm: {
-    text: string,
+    text: string
     source: {
       file: string | null
       line: number
       column: number
     } | null
     labels: unknown[] // TODO: find type
-  }[],
+  }[]
   labelDefinitions: Record<string, number>
   parsingTime: string
   filteredCount: number
-  popularArguments: Record<string, {
-    description: string
-    timesused: number
-  }>
+  popularArguments: Record<
+    string,
+    {
+      description: string
+      timesused: number
+    }
+  >
 }
 
 export type CompileFiltersKeys =

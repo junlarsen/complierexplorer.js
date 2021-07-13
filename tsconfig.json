@@ -6,7 +6,8 @@
         "declaration": true,
         "esModuleInterop": true,
         "lib": [
-            "es2016"
+            "es2016",
+            "dom" /* DOM necessary for browser build */
         ],
         "types": [
             "node",

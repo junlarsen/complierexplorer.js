@@ -1,11 +1,10 @@
 import {
-  LanguageResponse,
-  DefaultLanguageFields,
   DEFAULT_LANGUAGE_FIELDS,
+  DefaultLanguageFields,
   Language,
-  LanguageHints
+  LanguageHints,
+  LanguageResponse
 } from './schema/language'
-import fetch, { Response } from 'node-fetch'
 import {
   CompilerResponse,
   DEFAULT_COMPILER_FIELDS,
@@ -19,22 +18,32 @@ const COMMON_REQUEST_HEADERS = {
   'Content-Type': 'application/json'
 }
 
-/** Strongly typed JSON body variant of Fetch Response */
-export class GenericResponse<T> extends Response {
-  constructor(parent: Response) {
-    super(parent.body, parent)
-  }
-
-  /** De-serialize response body into JSON as type T */
-  async json(): Promise<T> {
-    const object = await super.json()
-
-    return object as T
-  }
+export type GenericResponse<T> = {
+  json(): Promise<T>
 }
 
-export class CompilerExplorer {
-  public constructor(protected host: string = 'https://godbolt.org') {}
+export interface RequestResponse<T> {
+  clone(): RequestResponse<T>
+  headers: T
+  ok: boolean
+  redirected: boolean
+  status: number
+  statusText: string
+  type: 'basic' | 'cors' | 'default' | 'error' | 'opaque' | 'opaqueredirect'
+  url: string
+}
+
+export abstract class HttpClient<
+  Fetch extends (url: string, init?: object) => Promise<Res>,
+  Res extends RequestResponse<Headers>,
+  Headers
+> {
+  protected constructor(
+    protected host: string = 'https://godbolt.org',
+    protected fetch: Fetch
+  ) {}
+
+  public abstract getHttpBackend(): 'node-fetch' | 'whatwg-fetch'
 
   /**
    * Retrieve list of programming languages the host CE supports
@@ -44,9 +53,10 @@ export class CompilerExplorer {
   async getAllLanguages<AdditionalFields extends keyof Language = never>(
     extraFields: (AdditionalFields | DefaultLanguageFields)[] = []
   ): Promise<
-    GenericResponse<
-      LanguageResponse<AdditionalFields & DefaultLanguageFields>[]
-    >
+    Res &
+      GenericResponse<
+        LanguageResponse<AdditionalFields & DefaultLanguageFields>[]
+      >
   > {
     const params = [...extraFields, ...DEFAULT_LANGUAGE_FIELDS].join(',')
     return this.#get(`/api/languages?fields=${params}`)
@@ -60,7 +70,8 @@ export class CompilerExplorer {
   async getAllCompilers<AdditionalFields extends string = never>(
     extraFields: (AdditionalFields | DefaultCompilerFields)[] = []
   ): Promise<
-    GenericResponse<(Record<AdditionalFields, unknown> & CompilerResponse)[]>
+    Res &
+      GenericResponse<(Record<AdditionalFields, unknown> & CompilerResponse)[]>
   > {
     const params = [...extraFields, ...DEFAULT_COMPILER_FIELDS].join(',')
     return this.#get(`/api/compilers?fields=${params}`)
@@ -77,7 +88,8 @@ export class CompilerExplorer {
     language: LanguageHints | string,
     extraFields: (AdditionalFields | DefaultCompilerFields)[] = []
   ): Promise<
-    GenericResponse<(Record<AdditionalFields, unknown> & CompilerResponse)[]>
+    Res &
+      GenericResponse<(Record<AdditionalFields, unknown> & CompilerResponse)[]>
   > {
     const params = [...extraFields, ...DEFAULT_COMPILER_FIELDS].join(',')
     return this.#get(`/api/compilers/${language}?fields=${params}`)
@@ -91,7 +103,7 @@ export class CompilerExplorer {
    */
   async getLibraries(
     language: LanguageHints | string
-  ): Promise<GenericResponse<LibraryResponse[]>> {
+  ): Promise<Res & GenericResponse<LibraryResponse[]>> {
     return this.#get(`/api/libraries/${language}`)
   }
 
@@ -100,23 +112,27 @@ export class CompilerExplorer {
    * @param compiler Compiler id to invoke
    * @param compilation Compilation options to pass to compiler
    */
-  async compile<T extends object = {}>(compiler: string, compilation: (CompilationRequest & T) | T): Promise<GenericResponse<CompilationResponse>> {
+  async compile<T extends object = {}>(
+    compiler: string,
+    compilation: (CompilationRequest & T) | T
+  ): Promise<Res & GenericResponse<CompilationResponse>> {
     return this.#post(`/api/compiler/${compiler}/compile`, compilation)
   }
 
-  async #post<T, S extends object>(url: string, body: S): Promise<GenericResponse<T>> {
-    const res = await fetch(`${this.host}${url}`, {
+  async #post<T, S extends object>(
+    url: string,
+    body: S
+  ): Promise<Res & GenericResponse<T>> {
+    return (await this.fetch(`${this.host}${url}`, {
       method: 'POST',
       headers: COMMON_REQUEST_HEADERS,
       body: JSON.stringify(body ?? {})
-    })
-    return new GenericResponse<T>(res)
+    })) as Res & GenericResponse<T>
   }
 
-  async #get<T>(url: string): Promise<GenericResponse<T>> {
-    const res = await fetch(`${this.host}${url}`, {
+  async #get<T>(url: string): Promise<Res & GenericResponse<T>> {
+    return (await this.fetch(`${this.host}${url}`, {
       headers: COMMON_REQUEST_HEADERS
-    })
-    return new GenericResponse<T>(res)
+    })) as Res & GenericResponse<T>
   }
 }
