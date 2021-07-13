@@ -18,7 +18,8 @@
   "scripts": {
     "prepublishOnly": "yarn compile",
     "compile": "yarn fmt && tsc",
-    "fmt": "prettier --config .prettierrc src/ --write"
+    "fmt": "prettier --config .prettierrc src/ --write",
+    "test": "jest"
   },
   "dependencies": {
     "@types/node-fetch": "^2.5.11",
