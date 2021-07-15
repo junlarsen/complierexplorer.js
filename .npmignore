@@ -1,6 +1,8 @@
 src
 browser
 node_modules
+examples
+dist/examples
 jest.config.js
 tsconfig.json
 .gitignore
