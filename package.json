@@ -18,7 +18,7 @@
   "scripts": {
     "prepublishOnly": "yarn compile:node",
     "compile:node": "yarn fmt && tsc --project tsconfig.json",
-    "compile:browser": "yarn compile:node && webpack ./dist/browser.js -o ./browser --mode production",
+    "compile:browser": "yarn compile:node && webpack ./dist/src/browser.js -o ./browser --mode production",
     "fmt": "prettier --config .prettierrc src/ --write",
     "test": "jest"
   },

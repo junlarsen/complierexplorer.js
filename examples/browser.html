@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <script src="../browser/main.js"></script>
+    <title>CompilerExplorer.js Example</title>
+  </head>
+  <body>
+    <h1>Godbolt.org supports the following compilers:</h1>
+    <div id="main"></div>
+  </body>
+  <script>
+    async function main() {
+      const ce = new window.CompilerExplorer()
+      const res = await ce.getAllCompilers()
+      const compilers = await res.json()
+      for (const compiler of compilers) {
+        const child = document.createTextNode(`Compiler ${compiler.name} for ${compiler.lang}`)
+        const paragraph = document.createElement('p')
+        paragraph.appendChild(child)
+        document.querySelector('#main').appendChild(
+          paragraph
+        )
+      }
+    }
+    main()
+  </script>
+</html>

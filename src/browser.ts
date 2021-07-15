@@ -12,7 +12,7 @@ export class CompilerExplorer extends HttpClient<
   Response['headers']
 > {
   constructor(host: string = 'https://godbolt.org') {
-    super(host, fetch)
+    super(host, window.fetch.bind(window))
   }
   public override getHttpBackend(): 'node-fetch' | 'whatwg-fetch' {
     return 'whatwg-fetch'
