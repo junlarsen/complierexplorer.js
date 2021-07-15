@@ -115,7 +115,7 @@ export abstract class HttpClient<
   async compile<T extends object = {}>(
     compiler: string,
     compilation: (CompilationRequest & T) | T
-  ): Promise<GenericResponse<CompilationResponse & Res>> {
+  ): Promise<GenericResponse<CompilationResponse> & Res> {
     return this.#post(`/api/compiler/${compiler}/compile`, compilation)
   }
 

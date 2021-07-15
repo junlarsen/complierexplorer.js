@@ -2,8 +2,8 @@
   "name": "compilerexplorer.js",
   "version": "2021.7.1-rc1",
   "description": "Compiler Explorer API client for NodeJS",
-  "main": "dist/node.js",
-  "types": "dist/node.d.ts",
+  "main": "dist/src/node.js",
+  "types": "dist/src/node.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/supergrecko/ce.js.git"
