@@ -53,10 +53,10 @@ export abstract class HttpClient<
   async getAllLanguages<AdditionalFields extends keyof Language = never>(
     extraFields: (AdditionalFields | DefaultLanguageFields)[] = []
   ): Promise<
-    Res &
-      GenericResponse<
-        LanguageResponse<AdditionalFields & DefaultLanguageFields>[]
-      >
+    GenericResponse<
+      LanguageResponse<AdditionalFields & DefaultLanguageFields>[]
+    > &
+      Res
   > {
     const params = [...extraFields, ...DEFAULT_LANGUAGE_FIELDS].join(',')
     return this.#get(`/api/languages?fields=${params}`)
@@ -70,8 +70,8 @@ export abstract class HttpClient<
   async getAllCompilers<AdditionalFields extends string = never>(
     extraFields: (AdditionalFields | DefaultCompilerFields)[] = []
   ): Promise<
-    Res &
-      GenericResponse<(Record<AdditionalFields, unknown> & CompilerResponse)[]>
+    GenericResponse<(Record<AdditionalFields, unknown> & CompilerResponse)[]> &
+      Res
   > {
     const params = [...extraFields, ...DEFAULT_COMPILER_FIELDS].join(',')
     return this.#get(`/api/compilers?fields=${params}`)
@@ -88,8 +88,8 @@ export abstract class HttpClient<
     language: LanguageHints | string,
     extraFields: (AdditionalFields | DefaultCompilerFields)[] = []
   ): Promise<
-    Res &
-      GenericResponse<(Record<AdditionalFields, unknown> & CompilerResponse)[]>
+    GenericResponse<(Record<AdditionalFields, unknown> & CompilerResponse)[]> &
+      Res
   > {
     const params = [...extraFields, ...DEFAULT_COMPILER_FIELDS].join(',')
     return this.#get(`/api/compilers/${language}?fields=${params}`)
@@ -103,7 +103,7 @@ export abstract class HttpClient<
    */
   async getLibraries(
     language: LanguageHints | string
-  ): Promise<Res & GenericResponse<LibraryResponse[]>> {
+  ): Promise<GenericResponse<LibraryResponse[] & Res>> {
     return this.#get(`/api/libraries/${language}`)
   }
 
@@ -115,14 +115,14 @@ export abstract class HttpClient<
   async compile<T extends object = {}>(
     compiler: string,
     compilation: (CompilationRequest & T) | T
-  ): Promise<Res & GenericResponse<CompilationResponse>> {
+  ): Promise<GenericResponse<CompilationResponse & Res>> {
     return this.#post(`/api/compiler/${compiler}/compile`, compilation)
   }
 
   async #post<T, S extends object>(
     url: string,
     body: S
-  ): Promise<Res & GenericResponse<T>> {
+  ): Promise<GenericResponse<T> & Res> {
     return (await this.fetch(`${this.host}${url}`, {
       method: 'POST',
       headers: COMMON_REQUEST_HEADERS,
@@ -130,7 +130,7 @@ export abstract class HttpClient<
     })) as Res & GenericResponse<T>
   }
 
-  async #get<T>(url: string): Promise<Res & GenericResponse<T>> {
+  async #get<T>(url: string): Promise<GenericResponse<T> & Res> {
     return (await this.fetch(`${this.host}${url}`, {
       headers: COMMON_REQUEST_HEADERS
     })) as Res & GenericResponse<T>
